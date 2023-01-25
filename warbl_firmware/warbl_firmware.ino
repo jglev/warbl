@@ -356,6 +356,8 @@ int sensorThreshold[] = { 260, 0 };         //the pressure sensor thresholds for
 int upperBound = 255;                       //this represents the pressure transition between the first and second registers. It is calculated on the fly as: (sensorThreshold[1] + ((newNote - 60) * multiplier))
 byte newState;                              //the note/octave state based on the sensor readings (1=not enough force to sound note, 2=enough force to sound first octave, 3 = enough force to sound second octave)
 byte prevState = 1;                         //the previous state, used to monitor change necessary for adding a small delay when a note is turned on from silence and we're sending not on velocity based on pressure.
+bool newThumbStateOpen = true;
+bool prevThumbStateOpen = true;
 unsigned long velocityDelayTimer = 0;       //a timer for the above delay.
 boolean sensorDataReady = 0;                //tells us that pressure data is available
 int jumpTime = 15;                          //the amount of time to wait before dropping back down from an octave jump to first octave because of insufficient pressure
@@ -575,11 +577,23 @@ void loop() {
 
     get_fingers();  //find which holes are covered
 
+    
+
 
     unsigned long nowtime = millis();  //get the current time for the timers used below
 
+    //Records whether back thumb is open:
+    newThumbStateOpen = (holeCovered & 0b100000000) == 0;
 
-
+    if (newThumbStateOpen != prevThumbStateOpen) {
+        if (newThumbStateOpen){
+            sendUSBMIDI(CC, 1, 99, 0);
+        } else {
+            sendUSBMIDI(CC, 1, 99, 127);
+            sendUSBMIDI(CC, 1, 123, 0);  // Midi CC for All Notes Off (see http://midi.teragonaudio.com/tech/midispec/ntnoff.htm)
+        }
+        prevThumbStateOpen = newThumbStateOpen;
+    }
 
     if (debounceFingerHoles()) {
         fingersChanged = 1;
