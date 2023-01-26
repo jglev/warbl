@@ -587,10 +587,10 @@ void loop() {
 
     if (newThumbStateOpen != prevThumbStateOpen) {
         if (newThumbStateOpen){
-            sendUSBMIDI(CC, 1, 99, 0);
+            sendUSBMIDI(CC, 6, 99, 0);
         } else {
-            sendUSBMIDI(CC, 1, 99, 127);
-            sendUSBMIDI(CC, 1, 123, 0);  // Midi CC for All Notes Off (see http://midi.teragonaudio.com/tech/midispec/ntnoff.htm)
+            sendUSBMIDI(CC, 6, 99, 127);
+            // sendUSBMIDI(CC, 6, 123, 0);  // Midi CC for All Notes Off (see http://midi.teragonaudio.com/tech/midispec/ntnoff.htm)
         }
         prevThumbStateOpen = newThumbStateOpen;
     }

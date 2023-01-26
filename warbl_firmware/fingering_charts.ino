@@ -66,9 +66,10 @@ const struct tinwhistle_explicit_entry tinwhistle_explicit[64] PROGMEM = {
   { 69, 1 },         //0110010 A | kVibratoMask;
   { 69, 1 },         //0110011 A | kVibratoMask;
   { 69, 0 },         //0110100 A
-  { 68, 0 },         //0110101 G#
+  { 69, 0 },         //0110101 A
   { 69, 0 },         //0110110 A
-  { 68, 0 },         //0110111 G#
+  { 6
+  , 0 },         //0110111 A
   { 67, 0b000010 },  //0111000 G
   { 67, 1 },         //0111001 G | kVibratoMask;
   { 67, 1 },         //0111010 G | kVibratoMask;
